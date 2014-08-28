@@ -1,0 +1,79 @@
+*pyfold.txt* Fold functionality for python files
+
+                                   __       _     _   ~
+                      _ __  _   _ / _| ___ | | __| |  ~
+                     | '_ \| | | | |_ / _ \| |/ _` |  ~
+                     | |_) | |_| |  _| (_) | | (_| |  ~
+                     | .__/ \__, |_|  \___/|_|\__,_|  ~
+                     |_|    |___/                     ~
+
+====================================================================
+CONTENTS                                              *pyfoldContents*
+
+    1. Introduction ......... |pyfoldIntro|
+    2. Configuration ........ |pyfoldConfig|
+    3. License .............. |pyfoldLicense|
+    4. Bugs ................. |pyfoldBugs|
+    5. Contributing ......... |pyfoldContributing|
+    6. Changelog ............ |pyfoldChangelog|
+
+====================================================================
+1. INTRODUCTION                                          *pyfoldIntro*
+
+pyfold lets you fold away python classes, methods, functions without
+any blank lines hanging out between folds these types of folds. It
+is also configurable to fold multi-line sections between braces,
+brackets, and/or parentheses.
+
+====================================================================
+2. CONFIGURATION                                        *pyfoldConfig*
+
+                                                     *g:pyfold_braces*
+                                                   *g:pyfold_brackets*
+                                                     *g:pyfold_parens*
+Use these options to enable/disable folding of multi-line sections
+between them: >
+    let g:pyfold_braces = 1
+    let g:pyfold_brackets = 1
+    let g:pyfold_parens = 0
+<
+====================================================================
+3. LICENSE                                             *pyfoldLicense*
+
+pyfold is MIT licensed
+
+
+====================================================================
+4. BUGS                                                   *pyfoldBugs*
+
+If you find a bug, please post it on the issue tracker:
+http://github.com/ryankuczka/vim-pyfold/issues/
+
+--------------------------------------------------------------------
+4.1 KNOWN ISSUES                                   *pyfoldKnownIssues*
+
+When folding parentheses is enabled, situations like: >
+    def foo(arg1, arg2, arg3,
+            arg4, **kwargs):
+        """ Docstring here """
+<are deliberately avoided. However, this also causes a minor issue
+with situations like: >
+    if (foo == bar and
+            not foobar):
+        # Do stuff
+<because the 'foldlevel' will be increased by 1 for the first line
+of the if statement, but not decreased by 1 for the second line as
+expected.
+
+====================================================================
+5. CONTRIBUTING                                   *pyfoldContributing*
+
+If you want to contribute to this plugin, feel free to fork it on
+GitHub and send a pull request!
+http://github.com/ryankuczka/vim-pyfold/
+
+====================================================================
+6. CHANGELOG                                         *pyfoldChangelog*
+
+v1.0
+    * Initial stable release
