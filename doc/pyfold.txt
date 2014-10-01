@@ -12,10 +12,11 @@ CONTENTS                                              *pyfoldContents*
 
     1. Introduction ......... |pyfoldIntro|
     2. Configuration ........ |pyfoldConfig|
-    3. License .............. |pyfoldLicense|
-    4. Bugs ................. |pyfoldBugs|
-    5. Contributing ......... |pyfoldContributing|
-    6. Changelog ............ |pyfoldChangelog|
+    3. Commands ............. |pyfoldCommands|
+    4. License .............. |pyfoldLicense|
+    5. Bugs ................. |pyfoldBugs|
+    6. Contributing ......... |pyfoldContributing|
+    7. Changelog ............ |pyfoldChangelog|
 
 ====================================================================
 1. INTRODUCTION                                          *pyfoldIntro*
@@ -28,29 +29,65 @@ brackets, and/or parentheses.
 ====================================================================
 2. CONFIGURATION                                        *pyfoldConfig*
 
-                                                     *g:pyfold_braces*
-                                                   *g:pyfold_brackets*
-                                                     *g:pyfold_parens*
+                                                   *'g:pyfold_braces'*
+                                                 *'g:pyfold_brackets'*
+                                                   *'g:pyfold_parens'*
 Use these options to enable/disable folding of multi-line sections
 between them: >
     let g:pyfold_braces = 1
     let g:pyfold_brackets = 1
     let g:pyfold_parens = 0
 <
+
+                                                  *'g:pyfold_enabled'*
+                                                  *'b:pyfold_enabled'*
+Use these options to enable/disable pyfold by default.
+|b:pyfold_enabled| is used if it exists, otherwise
+|g:pyfold_enabled| is used: >
+    let g:pyfold_enabled = 1
+    let b:pyfold_enabled = 1
+<
 ====================================================================
-3. LICENSE                                             *pyfoldLicense*
+3. COMMANDS
+
+                                                       *:PyFoldEnable*
+:PyFoldEnable
+    Enable pyfold.
+
+    Sets |b:pyfold_enabled| to 1 and sets 'foldmethod', 'foldexpr',
+    and 'foldtext' accordingly.
+
+                                                      *:PyFoldDisable*
+:PyFoldDisable
+    Disable pyfold
+
+    Sets |b:pyfold_enabled| to 0 and sets 'foldmethod', 'foldexpr',
+    and 'foldtext' as below. >
+        set foldmethod=manual
+        set foldexpr=0
+        set foldtext=foldtext()
+<
+                                                       *:PyFoldToggle*
+:PyFoldToggle
+    Toggle pyfold
+
+    This is the same as calling |:PyFoldEnable| if pyfold
+    is disabled or |:PyFoldDisable| if pyfold is enabled.
+
+====================================================================
+4. LICENSE                                             *pyfoldLicense*
 
 pyfold is MIT licensed
 
 
 ====================================================================
-4. BUGS                                                   *pyfoldBugs*
+5. BUGS                                                   *pyfoldBugs*
 
 If you find a bug, please post it on the issue tracker:
 http://github.com/ryankuczka/vim-pyfold/issues/
 
 --------------------------------------------------------------------
-4.1 KNOWN ISSUES                                   *pyfoldKnownIssues*
+5.1 KNOWN ISSUES                                   *pyfoldKnownIssues*
 
 When folding parentheses is enabled, situations like: >
     def foo(arg1, arg2, arg3,
@@ -66,14 +103,18 @@ of the if statement, but not decreased by 1 for the second line as
 expected.
 
 ====================================================================
-5. CONTRIBUTING                                   *pyfoldContributing*
+6. CONTRIBUTING                                   *pyfoldContributing*
 
 If you want to contribute to this plugin, feel free to fork it on
 GitHub and send a pull request!
 http://github.com/ryankuczka/vim-pyfold/
 
 ====================================================================
-6. CHANGELOG                                         *pyfoldChangelog*
+7. CHANGELOG                                         *pyfoldChangelog*
 
+v1.1
+    * Add |:PyFoldEnable|, |:PyFoldDisable|, and |:PyFoldToggle|
+      commands
+    * Add |'g:pyfold_enabled'| and |'b:pyfold_enabled'| options
 v1.0
     * Initial stable release

@@ -1,21 +1,33 @@
 " pyfold.vim -- Fancy folds for python
 " Maintainer: Ryan Kuczka <ryan.kuczka@gmail.com>
-" Last Updated: 2014-08-27
+" Last Updated: 2014-09-30
+
 if exists('b:loaded_pyfold')
   finish
 endif
 let b:loaded_pyfold = 1
 
-if !exists('g:python_fold_braces')
+" Config Settings: {{{1
+" ================
+if !exists('g:pyfold_braces')
   let g:pyfold_braces = 1
 endif
-if !exists('g:python_fold_brackets')
+if !exists('g:pyfold_brackets')
   let g:pyfold_brackets = 1
 endif
-if !exists('g:python_fold_parens')
+if !exists('g:pyfold_parens')
   let g:pyfold_parens = 0
 endif
+if !exists('b:pyfold_enabled')
+  if exists('g:pyfold_enabled')
+    let b:pyfold_enabled = g:pyfold_enabled
+  else
+    let b:pyfold_enabled = 1
+  endif
+endif
 
+" Regex Patterns: {{{1
+" ===============
 let s:class_func_pattern = '^\s*\%(@\|class\>\|def\>\)'
 let s:empty_line_pattern = '^\s*$'
 let s:brace_open_pattern = '^.\{-}{[^}]*$'
@@ -25,11 +37,13 @@ let s:bracket_close_pattern = '^[^\[]\{-}\].*$'
 let s:paren_open_pattern = '^.\{-}([^)]*$'
 let s:paren_close_pattern = '^[^(]\{-}):\@!.*$'
 
-function! IndentLevel(lnum) " {{{
+" Fold Option Functions: {{{1
+" ======================
+function! IndentLevel(lnum) " {{{2
   return indent(a:lnum) / &shiftwidth
-endfunction " }}}
+endfunction
 
-function! PythonFoldExpr(lnum)  " {{{
+function! PythonFoldExpr(lnum)  " {{{2
   let text = getline(a:lnum)
   let chars = split(text, '\zs')
 
@@ -86,9 +100,9 @@ function! PythonFoldExpr(lnum)  " {{{
 
   " Everything else, use the previous foldlevel
   return '='
-endfunction " }}}
+endfunction
 
-function! PythonFoldText() " {{{
+function! PythonFoldText() " {{{2
   " Get the appropriate size string
   let size = 1 + v:foldend - v:foldstart
   if size < 10
@@ -128,8 +142,41 @@ function! PythonFoldText() " {{{
   " Strip whitespace
   let text = substitute(text, '^\s*\(.\{-}\)\s*$', '\1', '')
   return '+'.v:folddashes.size.'lines: '.text
-endfunction " }}}
+endfunction " }}}2
 
-setlocal foldmethod=expr
-setlocal foldexpr=PythonFoldExpr(v:lnum)
-setlocal foldtext=PythonFoldText()
+" Commands: {{{1
+" =========
+function! s:PyFoldEnable() " {{{2
+  let b:pyfold_enabled = 1
+
+  setlocal foldmethod=expr
+  setlocal foldexpr=PythonFoldExpr(v:lnum)
+  setlocal foldtext=PythonFoldText()
+endfunction
+
+function! s:PyFoldDisable() " {{{2
+  let b:pyfold_enabled = 0
+
+  setlocal foldmethod=manual
+  setlocal foldexpr=0
+  setlocal foldtext=foldtext()
+endfunction
+
+function! s:PyFoldToggle() " {{{2
+  if b:pyfold_enabled
+    call <SID>PyFoldDisable()
+  else
+    call <SID>PyFoldEnable()
+  endif
+endfunction " }}}2
+
+command! PyFoldEnable call <SID>PyFoldEnable()
+command! PyFoldDisable call <SID>PyFoldDisable()
+command! PyFoldToggle call <SID>PyFoldToggle()
+
+" Enable on load if desired
+if b:pyfold_enabled
+  call <SID>PyFoldEnable()
+endif
+
+" vim:fdm=marker:fmr={{{,}}}:fdl=1
