@@ -83,6 +83,9 @@ pyfold is MIT licensed
 ====================================================================
 5. BUGS                                                   *pyfoldBugs*
 
+- When using FastFold, if something else (like diff mode) switches
+  the foldmethod, then pyfold must be re-enabled via |:PyFoldEnable|
+
 If you find a bug, please post it on the issue tracker:
 http://github.com/ryankuczka/vim-pyfold/issues/
 

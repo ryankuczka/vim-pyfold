@@ -28,6 +28,27 @@ but makes the folds look so much nicer.
 - **NeoBundle**: `NeoBundle 'ryankuczka/vim-pyfold'`
 - **vim-plug**: `Plug 'ryankuczka/vim-pyfold'`
 
+## Performance
+pyfold uses `set foldmethod=expr` to function. This can cause vim to slow down
+a lot due to vim recalculating folds all the time. If vim gets slow, you can
+temporarily disable or toggle pyfold on and off with the following commands.
+
+```vim
+:PyFoldEnable
+:PyFoldDisable
+:PyFoldToggle
+```
+
+### FastFold
+[FastFold](https://github.com/Konfekt/FastFold) is a great plugin which will only
+recalculate folds when saving which can greatly improve performance when using fold
+methods such as `expr`. I highly recommend installing it alongside pyfold for the
+best performance.
+
+> Unfortunately, due to how FastFold works, if something else changes the
+> foldmethod, such as diff mode, when the foldmethod would be changed back
+> FastFold keeps it at `manual` and pyfold must be re-enabled via `:PyFoldEnable`
+
 ## Examples
 
 ### Gap-less folding
